@@ -1,58 +1,306 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Vendorly
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Multi-Vendor Marketplace Platform
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 About the Project
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Vendorly** is a full-stack multi-vendor marketplace platform inspired by modern e-commerce systems like Shopee and Lazada. It allows multiple sellers to create their own stores, manage products, and sell to customers — all within a single platform.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This project is built to simulate a **real-world SaaS application**, focusing on scalability, clean architecture, and production-level features.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🎯 Purpose
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+This project was developed to:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+* Demonstrate full-stack development skills
+* Showcase real-world business logic implementation
+* Build a portfolio-ready application for hiring
+* Practice scalable and maintainable architecture
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🧱 Tech Stack
 
-```bash
-composer require laravel/boost --dev
+### Backend
 
-php artisan boost:install
+* Laravel
+* MySQL
+* Laravel Sanctum (Authentication)
+
+### Frontend
+
+* ReactJS + TypeScript
+* InertiaJS
+* TailwindCSS
+* Recharts (Analytics)
+
+### Optional / Integrations
+
+* Stripe (Payments)
+* Laravel Echo / Pusher (Real-time features)
+
+---
+
+## 👥 User Roles
+
+### 🛠️ Admin
+
+* Manage users and sellers
+* Approve or reject seller applications
+* Monitor platform activity
+* Manage categories and products
+* Configure commission rates
+
+### 🏪 Seller
+
+* Create and manage store
+* Add, update, and delete products
+* Track orders
+* View sales analytics
+
+### 🛍️ Buyer
+
+* Browse products
+* Add items to cart
+* Checkout and place orders
+* Track purchases
+* Leave reviews and ratings
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication & Authorization
+
+* Role-based authentication (Admin, Seller, Buyer)
+* Secure login and registration
+* Protected routes and policies
+
+---
+
+### 🛒 Marketplace System
+
+* Multi-vendor support
+* Product listings with categories
+* Product variants (e.g., size, color)
+* Inventory management
+
+---
+
+### 📦 Order Management
+
+* Full checkout flow
+* Order tracking system
+* Order status updates:
+
+  * Pending
+  * Paid
+  * Shipped
+  * Delivered
+  * Cancelled
+
+---
+
+### 💸 Payment System
+
+* Stripe integration (or mock payment system)
+* Payment status tracking
+
+---
+
+### ⭐ Reviews & Ratings
+
+* Buyers can review purchased products
+* Star-based rating system
+
+---
+
+### 🔎 Search & Filtering
+
+* Keyword search
+* Filter by price, category, and ratings
+
+---
+
+### 📊 Analytics Dashboard
+
+#### Seller Dashboard:
+
+* Sales overview
+* Revenue charts
+* Top-performing products
+
+#### Admin Dashboard:
+
+* Platform metrics
+* Total users, orders, revenue
+
+---
+
+### ⚡ Real-Time Features (Optional)
+
+* Live order updates
+* Notifications
+* Messaging system (basic)
+
+---
+
+## 🧭 Application Structure
+
+### Public Pages
+
+* Home
+* Product Listings
+* Product Details
+
+### Buyer Pages
+
+* Cart
+* Checkout
+* Order History
+
+### Seller Pages
+
+* Dashboard
+* Product Management
+* Orders Management
+* Analytics
+
+### Admin Pages
+
+* Dashboard
+* User Management
+* Seller Approval
+* Product Moderation
+
+---
+
+## 🗂️ Project Structure (High-Level)
+
+```
+backend/
+  app/
+  routes/
+  database/
+
+frontend/
+  components/
+  pages/
+  hooks/
+  types/
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 🧠 Architecture Highlights
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* Service Layer for business logic
+* Form Requests for validation
+* Policies for authorization
+* API Resources for consistent responses
+* Component-based frontend architecture
+* Strong TypeScript typing
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## ⚙️ Installation Guide
 
-## Security Vulnerabilities
+### 1. Clone the Repository
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/your-username/vendorly.git
+cd vendorly
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. Backend Setup (Laravel)
+
+```bash
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
+
+---
+
+### 3. Frontend Setup (React + Inertia)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🔐 Environment Variables
+
+Make sure to configure your `.env` file:
+
+```
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+
+APP_URL=
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+php artisan test
+```
+
+---
+
+## 🚀 Deployment
+
+* Backend: VPS / Laravel Forge
+* Frontend: Vercel (optional)
+* Database: MySQL
+
+---
+
+## 📈 Future Improvements
+
+* Mobile application (React Native)
+* AI-powered recommendations
+* Coupon & discount system
+* Multi-language support
+* Advanced analytics
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to fork this repository and submit a pull request.
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
+
+---
+
+## 🏁 Final Note
+
+Vendorly is designed as a **production-level project** to demonstrate real-world development skills, including:
+
+* Full-stack architecture
+* Scalable system design
+* Clean and maintainable code practices
+
+---
+
+⭐ If you find this project helpful, feel free to give it a star!
