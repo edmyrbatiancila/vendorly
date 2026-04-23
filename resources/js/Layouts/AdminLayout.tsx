@@ -43,34 +43,46 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     <nav className="mt-8 px-4">
                         <div className="space-y-2">
                             <Link
-                                href="/admin/dashboard"
+                                href={route('admin.dashboard')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
                                 Dashboard
                             </Link>
                             <Link
-                                href="/admin/sellers"
+                                href={route('admin.users.index')}
+                                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
+                            >
+                                Users
+                            </Link>
+                            <Link
+                                href={route('admin.sellers.index')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
                                 Sellers
                             </Link>
                             <Link
-                                href="/admin/products"
+                                href={route('admin.categories.index')}
+                                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
+                            >
+                                Categories
+                            </Link>
+                            <Link
+                                href={route('admin.products.index')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
                                 Products
                             </Link>
                             <Link
-                                href="/admin/orders"
+                                href={route('admin.orders.index')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
                                 Orders
                             </Link>
                             <Link
-                                href="/admin/users"
+                                href={route('admin.settings.index')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
-                                Users
+                                Settings & Commission
                             </Link>
                         </div>
                     </nav>

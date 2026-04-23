@@ -42,13 +42,13 @@ export default function SellerLayout({ children }: SellerLayoutProps) {
                     <nav className="mt-8 px-4">
                         <div className="space-y-2">
                             <Link
-                                href="/seller/dashboard"
+                                href={route('seller.dashboard')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
                                 Dashboard
                             </Link>
                             <Link
-                                href="/seller/products"
+                                href={route('seller.products.index')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
                                 Products
@@ -60,10 +60,10 @@ export default function SellerLayout({ children }: SellerLayoutProps) {
                                 Orders
                             </Link>
                             <Link
-                                href="/seller/profile"
+                                href={route('seller.setup')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
-                                Store Profile
+                                Store Setup
                             </Link>
                         </div>
                     </nav>
