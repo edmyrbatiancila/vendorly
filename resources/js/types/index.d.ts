@@ -132,6 +132,14 @@ export interface Review {
     updated_at: string;
     user?: User;
     product?: Product;
+    order_item?: OrderItem;
+}
+
+export interface Step {
+    key: string;
+    label: string;
+    completed: boolean;
+    current?: boolean;
 }
 
 export interface Cart {

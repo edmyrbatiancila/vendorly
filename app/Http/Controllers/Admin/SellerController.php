@@ -101,15 +101,24 @@ class SellerController extends Controller
 
     public function approve(Seller $seller)
     {
+        if ($seller->status === 'approved') {
+            return back()->with('error', 'Seller is already approved.');
+        }
+
         $seller->update(['status' => 'approved']);
 
-        // Send notification to seller (implement later)
+        // Activate the seller's user account
+        $seller->user->update(['is_active' => true]);
 
         return back()->with('success', 'Seller approved successfully');
     }
 
     public function reject(Request $request, Seller $seller)
     {
+        if ($seller->status !== 'pending') {
+            return back()->with('error', 'Only pending sellers can be rejected.');
+        }
+
         $request->validate([
             'reason' => 'required|string|max:500'
         ]);
@@ -119,15 +128,42 @@ class SellerController extends Controller
             'rejection_reason' => $request->reason,
         ]);
 
-        // Send notification to seller (implement later)
-
         return back()->with('success', 'Seller rejected successfully');
     }
 
-    public function suspend(Seller $seller)
+    public function suspend(Request $request, Seller $seller)
     {
-        $seller->update(['status' => 'suspended']);
+        $request->validate([
+            'reason' => 'required|string|max:500'
+        ]);
+
+        $seller->update([
+            'status' => 'suspended',
+            'rejection_reason' => $request->reason
+        ]);
 
         return back()->with('success', 'Seller suspended successfully');
+    }
+
+    /**
+     * Bulk approve sellers.
+     */
+    public function bulkApprove(Request $request)
+    {
+        $request->validate([
+            'seller_ids' => 'required|array',
+            'seller_ids.*' => 'exists:sellers,id'
+        ]);
+
+        $sellers = Seller::whereIn('id', $request->seller_ids)
+            ->where('status', 'pending')
+            ->get();
+
+        foreach ($sellers as $seller) {
+            $seller->update(['status' => 'approved']);
+            $seller->user->update(['is_active' => true]);
+        }
+
+        return back()->with('success', "Successfully approved {$sellers->count()} sellers.");
     }
 }

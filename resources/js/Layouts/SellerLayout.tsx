@@ -54,10 +54,22 @@ export default function SellerLayout({ children }: SellerLayoutProps) {
                                 Products
                             </Link>
                             <Link
-                                href="/seller/orders"
+                                href={route('seller.orders.index')}
                                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                             >
                                 Orders
+                            </Link>
+                            <Link
+                                href={route('seller.analytics')}
+                                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
+                            >
+                                Analytics
+                            </Link>
+                            <Link
+                                href={route('seller.inventory')}
+                                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
+                            >
+                                Inventory
                             </Link>
                             <Link
                                 href={route('seller.setup')}

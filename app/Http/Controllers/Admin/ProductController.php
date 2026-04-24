@@ -99,4 +99,22 @@ class ProductController extends Controller
 
         return back()->with('message', 'Product deleted successfully.');
     }
+
+    /**
+     * Bulk update product status.
+     */
+    public function bulkUpdateStatus(Request $request)
+    {
+        $request->validate([
+            'product_ids' => 'required|array',
+            'product_ids.*' => 'exists:products,id',
+            'is_active' => 'required|boolean'
+        ]);
+
+        $count = Product::whereIn('id', $request->product_ids)
+            ->update(['is_active' => $request->is_active]);
+
+        $status = $request->is_active ? 'activated' : 'deactivated';
+        return back()->with('message', "Successfully {$status} {$count} products.");
+    }
 }

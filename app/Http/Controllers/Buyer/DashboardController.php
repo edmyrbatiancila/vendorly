@@ -22,6 +22,13 @@ class DashboardController extends Controller
             'pending_orders' => $user->orders()->where('status', 'pending')->count(),
             'delivered_orders' => $user->orders()->where('status', 'delivered')->count(),
             'total_spent' => $user->orders()->sum('total_amount'),
+            'cart_items' => $user->cartItems()->count(),
+            'pending_reviews' => $user->orderItems()
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'delivered');
+                })
+                ->whereDoesntHave('review')
+                ->count(),
         ];
 
         $recent_orders = $user->orders()

@@ -159,12 +159,12 @@ class CategoryController extends Controller
     {
         // Check if category has products
         if ($category->products()->exists()) {
-            return back()->withErrors(['error' => 'Cannot delete category with existing products.']);
+            return back()->with('error', 'Cannot delete category with existing products.');
         }
 
         // Check if category has child categories
         if ($category->children()->exists()) {
-            return back()->withErrors(['error' => 'Cannot delete category with child categories.']);
+            return back()->with('error', 'Cannot delete category with child categories.');
         }
 
         $category->delete();

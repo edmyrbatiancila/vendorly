@@ -12,7 +12,13 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Buyer\DashboardController as BuyerDashboardController;
-use App\Http\Controllers\Seller\ProductController;
+use App\Http\Controllers\Buyer\ProductController as BuyerProductController;
+use App\Http\Controllers\Buyer\CartController as BuyerCartController;
+use App\Http\Controllers\Buyer\OrderController as BuyerOrderController;
+use App\Http\Controllers\Buyer\ReviewController as BuyerReviewController;
+use App\Http\Controllers\Seller\OrderController as SellerOrderController;
+use App\Http\Controllers\Seller\ProductController as SellerProductController;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -26,11 +32,11 @@ Route::get('/', function () {
 
 
 Route::get('/dashboard', function () {
-    $user = auth()->user();
+    $user = Auth::user();
 
-    if ($user->isAdmin()) {
+    if ($user->role === 'admin') {
         return redirect()->route('admin.dashboard');
-    } elseif ($user->isSeller()) {
+    } elseif ($user->role === 'seller') {
         return redirect()->route('seller.dashboard');
     } else {
         return redirect()->route('buyer.dashboard');
@@ -72,12 +78,14 @@ Route::middleware('auth')->group(function () {
         Route::patch('/sellers/{seller}/approve', [AdminSellerController::class, 'approve'])->name('sellers.approve');
         Route::patch('/sellers/{seller}/reject', [AdminSellerController::class, 'reject'])->name('sellers.reject');
         Route::patch('/sellers/{seller}/suspend', [AdminSellerController::class, 'suspend'])->name('sellers.suspend');
+        Route::patch('/sellers/bulk-approve', [AdminSellerController::class, 'bulkApprove'])->name('sellers.bulk-approve');
 
         // Product management
         Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
         Route::get('/products/{product}', [AdminProductController::class, 'show'])->name('products.show');
         Route::patch('/products/{product}/toggle-status', [AdminProductController::class, 'toggleStatus'])->name('products.toggle-status');
         Route::delete('/products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+        Route::patch('/products/bulk-status', [AdminProductController::class, 'bulkUpdateStatus'])->name('products.bulk-status');
 
         // Order management
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
@@ -108,13 +116,50 @@ Route::middleware('auth')->group(function () {
         Route::post('/setup', [SellerDashboardController::class, 'store'])->name('setup.store');
         
         // Product Management
-        Route::resource('products', ProductController::class);
-        Route::patch('/products/{product}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
+        Route::resource('products', SellerProductController::class);
+        Route::patch('/products/{product}/toggle-status', [SellerProductController::class, 'toggleStatus'])->name('products.toggle-status');
+
+        // Order Management
+        Route::get('/orders', [SellerOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [SellerOrderController::class, 'show'])->name('orders.show');
+        Route::patch('/orders/{orderItem}/status', [SellerOrderController::class, 'updateStatus'])->name('orders.update-status');
+
+        // Analytics & Reports
+        Route::get('/analytics', [SellerDashboardController::class, 'analytics'])->name('analytics');
+        Route::get('/inventory', [SellerDashboardController::class, 'inventory'])->name('inventory');
     });
 
     // Buyer routes
     Route::middleware(['role:buyer'])->prefix('buyer')->name('buyer.')->group(function () {
         Route::get('/dashboard', [BuyerDashboardController::class, 'index'])->name('dashboard');
+
+        // Product browsing
+        Route::get('/products', [BuyerProductController::class, 'index'])->name('products.index');
+        Route::get('/products/{product}', [BuyerProductController::class, 'show'])->name('products.show');
+
+        // Cart management
+        Route::get('/cart', [BuyerCartController::class, 'index'])->name('cart.index');
+        Route::post('/cart', [BuyerCartController::class, 'store'])->name('cart.store');
+        Route::patch('/cart/{cartItem}', [BuyerCartController::class, 'update'])->name('cart.update');
+        Route::delete('/cart/{cartItem}', [BuyerCartController::class, 'destroy'])->name('cart.destroy');
+        Route::delete('/cart', [BuyerCartController::class, 'clear'])->name('cart.clear');
+        Route::get('/cart/count', [BuyerCartController::class, 'count'])->name('cart.count');
+
+        // Order management
+        Route::get('/orders', [BuyerOrderController::class, 'index'])->name('orders.index');
+        Route::get('/checkout', [BuyerOrderController::class, 'checkout'])->name('orders.checkout');
+        Route::post('/orders', [BuyerOrderController::class, 'store'])->name('orders.store');
+        Route::get('/orders/{order}', [BuyerOrderController::class, 'show'])->name('orders.show');
+        Route::patch('/orders/{order}/cancel', [BuyerOrderController::class, 'cancel'])->name('orders.cancel');
+
+        // Review management
+        Route::get('/reviews', [BuyerReviewController::class, 'index'])->name('reviews.index');
+        Route::get('/reviews/reviewable', [BuyerReviewController::class, 'reviewable'])->name('reviews.reviewable');
+        Route::get('/reviews/create/{orderItem}', [BuyerReviewController::class, 'create'])->name('reviews.create');
+        Route::post('/reviews', [BuyerReviewController::class, 'store'])->name('reviews.store');
+        Route::get('/reviews/{review}/edit', [BuyerReviewController::class, 'edit'])->name('reviews.edit');
+        Route::patch('/reviews/{review}', [BuyerReviewController::class, 'update'])->name('reviews.update');
+        Route::delete('/reviews/{review}', [BuyerReviewController::class, 'destroy'])->name('reviews.destroy');
     });
 });
 

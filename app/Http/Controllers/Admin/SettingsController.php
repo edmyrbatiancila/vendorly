@@ -53,8 +53,8 @@ class SettingsController extends Controller
     public function updateCommission(Request $request, Seller $seller)
     {
         $request->validate([
-            'commission_rate' => 'required|numeric|min:0|max:50',
-            'reason' => 'nullable|string|max:500',
+            'commission_rate' => 'required|numeric|min:0|max:20',
+            'reason' => 'required|string|max:500',
         ]);
 
         $oldRate = $seller->commission_rate;
@@ -83,10 +83,10 @@ class SettingsController extends Controller
     public function bulkUpdateCommission(Request $request)
     {
         $request->validate([
-            'commission_rate' => 'required|numeric|min:0|max:50',
+            'commission_rate' => 'required|numeric|min:0|max:20',
             'seller_ids' => 'required|array',
             'seller_ids.*' => 'exists:sellers,id',
-            'reason' => 'nullable|string|max:500',
+            'reason' => 'required|string|max:500',
         ]);
 
         $updated = Seller::whereIn('id', $request->seller_ids)
@@ -110,7 +110,7 @@ class SettingsController extends Controller
     public function setDefaultCommission(Request $request)
     {
         $request->validate([
-            'default_commission_rate' => 'required|numeric|min:0|max:50',
+            'default_commission_rate' => 'required|numeric|min:0|max:20',
         ]);
 
         // Store in config or settings table (for now using cache)

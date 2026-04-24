@@ -119,4 +119,58 @@ class DashboardController extends Controller
     {
         //
     }
+
+    public function analytics(Request $request): Response
+    {
+        $seller = $request->user()->seller;
+
+        // Monthly revenue data
+        $monthlyRevenue = $seller->orderItems()
+            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, SUM(total_price) as revenue')
+            ->whereHas('order', fn($q) => $q->where('status', 'delivered'))
+            ->whereYear('created_at', now()->year)
+            ->groupBy('year', 'month')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+
+        // Top performing products
+        $topProducts = $seller->products()
+            ->withSum(['orderItems as total_sold' => function($query) {
+                $query->whereHas('order', fn($q) => $q->where('status', 'delivered'));
+            }], 'quantity')
+            ->withSum(['orderItems as total_revenue' => function($query) {
+                $query->whereHas('order', fn($q) => $q->where('status', 'delivered'));
+            }], 'total_price')
+            ->orderBy('total_revenue', 'desc')
+            ->take(10)
+            ->get();
+
+        return Inertia::render('Seller/Analytics', [
+            'monthlyRevenue' => $monthlyRevenue,
+            'topProducts' => $topProducts,
+            'seller' => $seller
+        ]);
+    }
+
+    public function inventory(Request $request): Response
+    {
+        $seller = $request->user()->seller;
+
+        $lowStockProducts = $seller->products()
+            ->whereRaw('stock_quantity <= min_stock_level')
+            ->where('stock_quantity', '>', 0)
+            ->with('category')
+            ->get();
+
+        $outOfStockProducts = $seller->products()
+            ->where('stock_quantity', 0)
+            ->with('category')
+            ->get();
+
+        return Inertia::render('Seller/Inventory', [
+            'lowStockProducts' => $lowStockProducts,
+            'outOfStockProducts' => $outOfStockProducts
+        ]);
+    }
 }
